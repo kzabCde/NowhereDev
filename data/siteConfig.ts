@@ -50,9 +50,9 @@ export const siteConfig = {
     location: "Thailand",
     email: "NowhereDev@email.com",
 
-    yearsExperience: 5,
-    projectsDelivered: 28,
-    happyClients: 19,
+    yearsExperience: 3,
+    projectsDelivered: 16,
+    happyClients: 14,
   },
 
   /* =========================
@@ -135,6 +135,20 @@ export const siteConfig = {
       githubUrl: "",
       featured: true,
       category: "Business",
+    },
+
+    {
+      title: "XAU BTC By Nowhere",
+      description:
+        "Real-time Gold (XAU) and Bitcoin (BTC) price tracking dashboard with market insights.",
+      image:
+        "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?auto=format&fit=crop&w=1200&q=80",
+      tech: ["Next.js", "Tailwind", "Finance API"],
+      liveUrl:
+        "https://xau-btcbynowhere.web.app/",
+      githubUrl: "",
+      featured: true,
+      category: "Finance Dashboard",
     },
   ] as Project[],
 
