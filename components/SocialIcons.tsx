@@ -24,7 +24,7 @@ const iconMap = {
   youtube: Youtube,
   tiktok: Music2,
   discord: Disc3,
-  email: Mail
+  email: Mail,
 } as const;
 
 type SocialKey = keyof typeof iconMap;

@@ -62,8 +62,28 @@ export const siteConfig = {
       description: "Online catalog",
       image:
         "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80",
-      tech: ["Next.js", "Tailwind"],
+      tech: ["Next.js", "Tailwind", "Supabase"],
       liveUrl: "https://seps-catalog.vercel.app/",
+      githubUrl: "",
+      featured: true
+    },
+    {
+      title: "qu1ckmath",
+      description: "คณิตคิดเร็วออนไลน์",
+      image:
+        "https://images.unsplash.com/photo-1635372722656-389f87a941b7?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      tech: ["HTML", "CSS", "JavaScript"],
+      liveUrl: "https://qu1ckmath.web.app/",
+      githubUrl: "",
+      featured: true
+    },
+    {
+      title: "Point Collector App",
+      description: "แอปสำหรับเก็บคะแนนสะสมจากผู้ใช้งาน",
+      image:
+        "https://images.unsplash.com/photo-1646972463404-6ba338ca31fb?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      tech: ["Next.js", "Tailwind", "Supabase"],
+      liveUrl: "https://point-collector-app.vercel.app/",
       githubUrl: "",
       featured: true
     }
@@ -74,8 +94,8 @@ export const siteConfig = {
     "TypeScript",
     "Node.js",
     "Python",
-    "Tailwind",
-    "MongoDB"
+    "Tailwind", 
+    "Supabase"
   ]
 };
 

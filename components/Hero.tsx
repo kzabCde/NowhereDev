@@ -61,7 +61,6 @@ export default function Hero() {
         >
           <MagneticButton href="#projects">View Projects</MagneticButton>
           <MagneticButton href="#contact">Contact Me</MagneticButton>
-          <MagneticButton href={siteConfig.resumeUrl || "#"}>Download Resume</MagneticButton>
         </motion.div>
       </div>
     </section>
