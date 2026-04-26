@@ -6,97 +6,153 @@ export type Project = {
   liveUrl: string;
   githubUrl?: string;
   featured?: boolean;
+  category?: string;
+};
+
+export type Skill = {
+  name: string;
+  level: number;
 };
 
 export const siteConfig = {
+  /* =========================
+     BRAND
+  ========================= */
   brand: "NOWHEREDEV",
   heroTitle: "NOWHEREDEV",
+
   heroSubtitle: [
-    "Full Stack Developer",
-    "Creative Engineer",
-    "UI Architect",
-    "Digital Builder"
+    "PRECISION DEVELOPER",
+    "FULL STACK ENGINEER",
+    "UI SYSTEM DESIGNER",
+    "DIGITAL BUILDER",
   ],
+
+  /* =========================
+     NAVIGATION
+  ========================= */
   navLinks: [
     { label: "About", href: "#about" },
     { label: "Projects", href: "#projects" },
     { label: "Skills", href: "#skills" },
     { label: "Social", href: "#socials" },
-    { label: "Contact", href: "#contact" }
+    { label: "Contact", href: "#contact" },
   ],
+
+  /* =========================
+     ABOUT
+  ========================= */
   about: {
     name: "NowhereDev",
-    bio: "Nowhere But Anywhere",
-    location: "World",
+    role: "Full Stack Developer",
+    bio: "Crafting fast, elegant, and scalable digital products with clean code, modern UI systems, and performance-first thinking.",
+
+    location: "Thailand",
     email: "NowhereDev@email.com",
+
     yearsExperience: 5,
     projectsDelivered: 28,
-    happyClients: 19
+    happyClients: 19,
   },
-  contactHeadline: "Let’s build your next standout digital experience.",
+
+  /* =========================
+     CONTACT
+  ========================= */
+  contactHeadline:
+    "Let’s build your next standout digital experience.",
+
   resumeUrl: "",
+
+  /* =========================
+     SOCIAL
+  ========================= */
   socials: {
     github: "https://github.com/kzabCde",
     linkedin: "",
-    facebook: "https://www.facebook.com/supavich.sativattamakorn/",
+    facebook:
+      "https://www.facebook.com/supavich.sativattamakorn/",
     instagram: "https://www.instagram.com/ithque_/",
     twitter: "",
     youtube: "https://www.youtube.com/@Qtudio",
     tiktok: "https://www.tiktok.com/@qubestudi0",
     discord: "",
-    email: "NowhereDev@email.com"
+    steam: "https://steamcommunity.com/id/KZzzzCN/",
+    email: "NowhereDev@email.com",
   },
+
+  /* =========================
+     PROJECTS
+  ========================= */
   projects: [
     {
       title: "Thailand Air Intelligence",
-      description: "สำหรับติดตาม PM2.5 / PM10 / AQI",
+      description:
+        "Real-time PM2.5 / PM10 / AQI monitoring dashboard for Thailand.",
       image:
         "https://images.unsplash.com/photo-1518623489648-a173ef7824f3?auto=format&fit=crop&w=1200&q=80",
-      tech: ["Next.js", "Tailwind"],
-      liveUrl: "https://thai-air-intelligence-lite.vercel.app/",
+      tech: ["Next.js", "Tailwind", "API"],
+      liveUrl:
+        "https://thai-air-intelligence-lite.vercel.app/",
       githubUrl: "",
-      featured: true
+      featured: true,
+      category: "Dashboard",
     },
+
     {
       title: "SEPS",
-      description: "Online catalog",
+      description:
+        "Modern online product catalog with clean browsing experience.",
       image:
         "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80",
       tech: ["Next.js", "Tailwind", "Supabase"],
       liveUrl: "https://seps-catalog.vercel.app/",
       githubUrl: "",
-      featured: true
+      featured: true,
+      category: "E-Commerce",
     },
+
     {
       title: "qu1ckmath",
-      description: "คณิตคิดเร็วออนไลน์",
+      description:
+        "Interactive speed-math web app for practice and learning.",
       image:
-        "https://images.unsplash.com/photo-1635372722656-389f87a941b7?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1635372722656-389f87a941b7?q=80&w=1931&auto=format&fit=crop",
       tech: ["HTML", "CSS", "JavaScript"],
       liveUrl: "https://qu1ckmath.web.app/",
       githubUrl: "",
-      featured: true
+      featured: true,
+      category: "Education",
     },
+
     {
       title: "Point Collector App",
-      description: "แอปสำหรับเก็บคะแนนสะสมจากผู้ใช้งาน",
+      description:
+        "Loyalty reward platform for customer point collection systems.",
       image:
-        "https://images.unsplash.com/photo-1646972463404-6ba338ca31fb?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1646972463404-6ba338ca31fb?q=80&w=1965&auto=format&fit=crop",
       tech: ["Next.js", "Tailwind", "Supabase"],
       liveUrl: "https://point-collector-app.vercel.app/",
       githubUrl: "",
-      featured: true
-    }
+      featured: true,
+      category: "Business",
+    },
   ] as Project[],
+
+  /* =========================
+     SKILLS
+  ========================= */
   skills: [
-    "Next.js",
-    "React",
-    "TypeScript",
-    "Node.js",
-    "Python",
-    "Tailwind", 
-    "Supabase"
-  ]
+    { name: "Next.js", level: 70 },
+    { name: "React", level: 75 },
+    { name: "TypeScript", level: 70 },
+    { name: "Node.js", level: 70 },
+    { name: "Python", level: 50 },
+    { name: "Supabase", level: 80 },
+    { name: "Tailwind CSS", level: 60 },
+    { name: "UI/UX Design", level: 80 },
+    { name: "Framer Motion", level: 80 },
+    { name: "REST API", level: 75 },
+  ] as Skill[],
 };
 
 export type SiteConfig = typeof siteConfig;
