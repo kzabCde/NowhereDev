@@ -91,7 +91,7 @@ export default function Projects() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-black transition hover:scale-105"
                 >
-                  Live Demo <ArrowUpRight size={15} />
+                  Link <ArrowUpRight size={15} />
                 </Link>
 
                 {project.githubUrl && (
