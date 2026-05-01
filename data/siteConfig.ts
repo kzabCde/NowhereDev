@@ -156,7 +156,7 @@ export const siteConfig = {
       description:
         "catch the number game for endless fun and excitement.",
       image:
-        "https://plus.unsplash.com/premium_photo-1717828805393-076bd2b5e138?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1770320187510-798deec0af2f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGx1Y2t5JTIwbnVtYmVyfGVufDB8fDB8fHwy",
       tech: ["Next.js", "Tailwind", "Framer Motion"],
       liveUrl:
         "https://catch-number.vercel.app/",
