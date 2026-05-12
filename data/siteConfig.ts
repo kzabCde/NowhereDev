@@ -112,19 +112,6 @@ export const siteConfig = {
     },
 
     {
-      title: "qu1ckmath",
-      description:
-        "Interactive speed-math web app for practice and learning.",
-      image:
-        "https://images.unsplash.com/photo-1635372722656-389f87a941b7?q=80&w=1931&auto=format&fit=crop",
-      tech: ["HTML", "CSS", "JavaScript"],
-      liveUrl: "https://qu1ckmath.web.app/",
-      githubUrl: "",
-      featured: true,
-      category: "Education",
-    },
-
-    {
       title: "Point Collector App",
       description:
         "Loyalty reward platform for customer point collection systems.",
@@ -152,14 +139,14 @@ export const siteConfig = {
     },
 
     {
-      title: "Catch Number",
+      title: "Nowhere Game",
       description:
-        "catch the number game for endless fun and excitement.",
+        "An engaging browser-based game for entertainment and challenge.",
       image:
-        "https://images.unsplash.com/photo-1770320187510-798deec0af2f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGx1Y2t5JTIwbnVtYmVyfGVufDB8fDB8fHwy",
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
       tech: ["Next.js", "Tailwind", "Framer Motion"],
       liveUrl:
-        "https://catch-number.vercel.app/",
+        "https://nowheregame.vercel.app/",
       githubUrl: "",
       featured: true,
       category: "Game",
