@@ -125,14 +125,14 @@ export const siteConfig = {
     },
 
     {
-      title: "XAU BTC By Nowhere",
+      title: "Stocks trend By Nowhere",
       description:
-        "Real-time Gold (XAU) and Bitcoin (BTC) price tracking dashboard with market insights.",
+        "“Minimal market insight. Maximum signal.”",
       image:
         "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?auto=format&fit=crop&w=1200&q=80",
       tech: ["Next.js", "Tailwind", "Finance API"],
       liveUrl:
-        "https://xau-btcbynowhere.web.app/",
+        "https://nowhereinsidestock.vercel.app/",
       githubUrl: "",
       featured: true,
       category: "Finance Dashboard",
