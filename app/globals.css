@@ -1,94 +1,250 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root{
-  --bg:#050505;
-  --bg2:#0d0d0d;
-  --white:#ffffff;
-  --silver:#d7d7d7;
-  --gray:#8f8f8f;
+/* =============================================================
+   DESIGN TOKENS
+   Semantic color system driven by CSS variables so every
+   component reads from one source of truth and theme switching
+   is a single class on <html>. Values are HSL channels.
+============================================================= */
+@layer base {
+  :root {
+    /* Light theme */
+    --background: 240 20% 99%;
+    --foreground: 240 12% 9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 12% 9%;
+
+    --muted: 240 16% 96%;
+    --muted-foreground: 240 6% 42%;
+
+    --border: 240 10% 90%;
+    --input: 240 10% 88%;
+    --ring: 252 90% 60%;
+
+    --primary: 252 90% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 199 89% 48%;
+    --secondary-foreground: 0 0% 100%;
+
+    --success: 152 62% 40%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 30 40% 12%;
+
+    --error: 0 78% 56%;
+    --error-foreground: 0 0% 100%;
+
+    --radius: 0.875rem;
+
+    /* Decorative gradients / glows */
+    --glow-a: 252 90% 60%;
+    --glow-b: 199 89% 48%;
+    --grid-line: 240 12% 9%;
+  }
+
+  .dark {
+    --background: 240 16% 4%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 12% 7%;
+    --card-foreground: 0 0% 98%;
+
+    --muted: 240 8% 13%;
+    --muted-foreground: 240 6% 64%;
+
+    --border: 240 8% 18%;
+    --input: 240 8% 20%;
+    --ring: 252 95% 70%;
+
+    --primary: 252 95% 70%;
+    --primary-foreground: 252 90% 8%;
+
+    --secondary: 199 90% 56%;
+    --secondary-foreground: 199 90% 8%;
+
+    --success: 152 60% 50%;
+    --success-foreground: 152 60% 8%;
+
+    --warning: 38 95% 58%;
+    --warning-foreground: 30 60% 8%;
+
+    --error: 0 84% 64%;
+    --error-foreground: 0 0% 100%;
+
+    --glow-a: 252 95% 65%;
+    --glow-b: 199 90% 56%;
+    --grid-line: 0 0% 100%;
+  }
 }
 
-html{
-scroll-behavior:smooth;
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchor jumps so fixed navbar doesn't overlap headings */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  /* Visible, consistent focus ring for keyboard users */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: calc(var(--radius) - 0.5rem);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.35);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.55);
+    background-clip: content-box;
+  }
 }
 
-body{
-background:
-radial-gradient(circle at top right,#1a1a1a 0%,#050505 45%),
-linear-gradient(135deg,#050505,#0d0d0d);
-color:white;
-font-family:'Inter',sans-serif;
-overflow-x:hidden;
+/* =============================================================
+   COMPONENT UTILITIES
+============================================================= */
+@layer components {
+  /* Frosted surface used by cards, panels and the navbar */
+  .glass {
+    background-color: hsl(var(--card) / 0.6);
+    border: 1px solid hsl(var(--border) / 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* Subtle technical grid background */
+  .bg-grid {
+    background-image: linear-gradient(
+        to right,
+        hsl(var(--grid-line) / 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        hsl(var(--grid-line) / 0.05) 1px,
+        transparent 1px
+      );
+    background-size: 40px 40px;
+    -webkit-mask-image: radial-gradient(
+      ellipse at center,
+      black 30%,
+      transparent 75%
+    );
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+
+  /* Gradient text accent */
+  .text-gradient {
+    background-image: linear-gradient(
+      120deg,
+      hsl(var(--foreground)),
+      hsl(var(--primary)) 60%,
+      hsl(var(--secondary))
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Hover shine sweep */
+  .shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .shine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-120%) skewX(-20deg);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--foreground) / 0.12),
+      transparent
+    );
+    transition: transform 0.9s ease;
+  }
+  .shine:hover::after {
+    transform: translateX(120%) skewX(-20deg);
+  }
 }
 
-h1,h2,h3,h4,h5,.brand{
-font-family:'Orbitron',sans-serif;
-letter-spacing:.12em;
-}
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+  }
 
-::selection{
-background:white;
-color:black;
-}
+  /* Skeleton shimmer */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: hsl(var(--muted));
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--foreground) / 0.06),
+      transparent
+    );
+    animation: shimmer 1.6s infinite;
+  }
 
-/* scrollbar */
-::-webkit-scrollbar{
-width:8px;
-}
-
-::-webkit-scrollbar-track{
-background:#050505;
-}
-
-::-webkit-scrollbar-thumb{
-background:#ffffff22;
-border-radius:10px;
-}
-
-::-webkit-scrollbar-thumb:hover{
-background:#ffffff55;
-}
-
-/* reusable cards */
-.print-card{
-background:rgba(255,255,255,.03);
-border:1px solid rgba(255,255,255,.08);
-backdrop-filter:blur(14px);
-}
-
-.print-shadow{
-box-shadow:
-0 0 0 1px rgba(255,255,255,.05),
-0 15px 50px rgba(255,255,255,.06);
-}
-
-/* hover shine */
-.shine{
-position:relative;
-overflow:hidden;
-}
-
-.shine::after{
-content:'';
-position:absolute;
-top:0;
-left:-120%;
-width:50%;
-height:100%;
-background:linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.18),
-transparent
-);
-transform:skewX(-25deg);
-transition:1s;
-}
-
-.shine:hover::after{
-left:140%;
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
 }

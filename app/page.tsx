@@ -9,15 +9,17 @@ import Footer from "@/components/Footer";
 
 export default function HomePage() {
   return (
-    <main className="relative overflow-x-clip bg-gradient-to-b from-black via-surface to-black">
+    <>
       <Navbar />
-      <Hero />
-      <About />
-      <Projects />
-      <Skills />
-      <Socials />
-      <Contact />
+      <main className="relative overflow-x-clip">
+        <Hero />
+        <About />
+        <Projects />
+        <Skills />
+        <Socials />
+        <Contact />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

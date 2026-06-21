@@ -8,57 +8,57 @@ import { siteConfig } from "@/data/siteConfig";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 px-6 py-14">
+    <footer className="border-t border-border px-6 py-14">
       <div className="mx-auto w-full max-w-7xl">
         <div className="grid gap-10 md:grid-cols-2 md:items-end">
-          {/* Left */}
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <p className="text-xs uppercase tracking-[0.35em] text-white/45">
-              Final Section
-            </p>
+            <Link href="#home" className="flex items-center gap-2.5">
+              <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-primary to-secondary text-sm font-bold text-primary-foreground">
+                {siteConfig.brand.charAt(0)}
+              </span>
+              <span className="font-display text-lg font-semibold tracking-tight text-foreground">
+                {siteConfig.brand.charAt(0) +
+                  siteConfig.brand.slice(1).toLowerCase()}
+              </span>
+            </Link>
 
-            <h3 className="brand mt-3 text-2xl md:text-3xl font-black tracking-[0.18em] text-white">
-              {siteConfig.brand}
-            </h3>
-
-            <p className="mt-4 max-w-md text-sm leading-6 text-white/60">
-              Crafted with precision, modern code, and premium interface design.
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
+              Crafting fast, elegant, and scalable digital products with clean
+              code and premium interface design.
             </p>
           </motion.div>
 
-          {/* Right */}
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.08 }}
-            className="md:text-right"
+            className="md:flex md:justify-end"
           >
-            <p className="mb-4 text-xs uppercase tracking-[0.25em] text-white/45">
-              Connect
-            </p>
-
-            <div className="md:flex md:justify-end">
+            <div>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground md:text-right">
+                Connect
+              </p>
               <SocialIcons compact />
             </div>
           </motion.div>
         </div>
 
-        {/* Bottom Row */}
-        <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 md:flex-row md:items-center md:justify-between">
-          <p className="text-sm text-white/55">
-            © 2026 {siteConfig.brand} — Crafted in the dark.
+        <div className="mt-10 flex flex-col gap-4 border-t border-border pt-6 md:flex-row md:items-center md:justify-between">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} {siteConfig.brand}. All rights
+            reserved.
           </p>
 
           <Link
             href="#home"
-            className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-xs uppercase tracking-[0.16em] text-white/75 transition hover:bg-white hover:text-black"
+            className="inline-flex w-fit items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-foreground hover:text-background"
           >
-            Back to Top <ArrowUp size={14} />
+            Back to top <ArrowUp size={14} />
           </Link>
         </div>
       </div>

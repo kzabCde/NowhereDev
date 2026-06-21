@@ -15,6 +15,7 @@ import {
 import { FaSteam } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { siteConfig } from "@/data/siteConfig";
+import { cn } from "@/lib/utils";
 
 const iconMap = {
   github: Github,
@@ -29,52 +30,68 @@ const iconMap = {
   email: Mail,
 } as const;
 
-type SocialKey = keyof typeof iconMap;
-
-type Props = {
-  compact?: boolean;
+// Human-readable labels for accessibility.
+const labelMap: Record<string, string> = {
+  github: "GitHub",
+  linkedin: "LinkedIn",
+  facebook: "Facebook",
+  instagram: "Instagram",
+  twitter: "Twitter",
+  youtube: "YouTube",
+  tiktok: "TikTok",
+  discord: "Discord",
+  steam: "Steam",
+  email: "Email",
 };
 
-export default function SocialIcons({ compact = false }: Props) {
-  const socials = Object.entries(siteConfig.socials).filter(
-    ([, value]) => Boolean(value)
+type SocialKey = keyof typeof iconMap;
+
+export default function SocialIcons({
+  compact = false,
+}: {
+  compact?: boolean;
+}) {
+  const socials = Object.entries(siteConfig.socials).filter(([, value]) =>
+    Boolean(value)
   );
 
   return (
     <div
-      className={`flex flex-wrap gap-3 ${
+      className={cn(
+        "flex flex-wrap gap-3",
         compact ? "justify-start" : "justify-center"
-      }`}
+      )}
     >
       {socials.map(([key, value], idx) => {
         const socialKey = key as SocialKey;
         const Icon = iconMap[socialKey];
-
         if (!Icon) return null;
 
         const href =
           socialKey === "email" ? `mailto:${value}` : String(value);
+        const label = labelMap[socialKey] ?? socialKey;
 
         return (
           <motion.div
             key={key}
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.04 }}
-            whileHover={{ y: -5, scale: 1.06 }}
-            whileTap={{ scale: 0.96 }}
+            whileHover={{ y: -4 }}
+            whileTap={{ scale: 0.95 }}
           >
             <Link
               href={href}
-              target="_blank"
+              target={socialKey === "email" ? undefined : "_blank"}
               rel="noreferrer"
-              aria-label={key}
-              className="group inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-white/75 backdrop-blur-xl transition duration-300 hover:border-white/20 hover:bg-white hover:text-black hover:shadow-[0_12px_30px_rgba(255,255,255,0.08)]"
+              aria-label={label}
+              title={label}
+              className="group inline-flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-card/40 text-muted-foreground transition-colors duration-300 hover:border-primary/40 hover:bg-primary hover:text-primary-foreground"
             >
               <Icon
                 size={18}
-                className="transition duration-300 group-hover:scale-110"
+                className="transition-transform duration-300 group-hover:scale-110"
               />
             </Link>
           </motion.div>
