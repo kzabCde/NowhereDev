@@ -1,114 +1,180 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowUpRight, Github } from "lucide-react";
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, Github, FolderOpen } from "lucide-react";
 import { siteConfig } from "@/data/siteConfig";
+import { Section, SectionHeading } from "@/components/ui/Section";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
+
+const ALL = "All";
+
+function ProjectImage({ src, alt }: { src: string; alt: string }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div className="relative h-52 overflow-hidden">
+      {!loaded && <div className="skeleton absolute inset-0" aria-hidden />}
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        onLoad={() => setLoaded(true)}
+        className={cn(
+          "object-cover transition-all duration-700 ease-spring group-hover:scale-105",
+          loaded ? "opacity-100" : "opacity-0"
+        )}
+        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+    </div>
+  );
+}
 
 export default function Projects() {
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    siteConfig.projects.forEach((p) => p.category && set.add(p.category));
+    return [ALL, ...Array.from(set)];
+  }, []);
+
+  const [filter, setFilter] = useState<string>(ALL);
+
+  const visible = useMemo(
+    () =>
+      filter === ALL
+        ? siteConfig.projects
+        : siteConfig.projects.filter((p) => p.category === filter),
+    [filter]
+  );
+
   return (
-    <section
-      id="projects"
-      className="mx-auto w-full max-w-7xl px-6 py-24 md:py-32"
-    >
-      {/* Heading */}
-      <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-center md:text-left"
-      >
-        <p className="mb-3 text-xs uppercase tracking-[0.35em] text-white/45">
-          Portfolio Showcase
-        </p>
+    <Section id="projects" aria-label="Projects">
+      <SectionHeading
+        eyebrow="Portfolio"
+        title="Featured projects"
+        description="Selected builds focused on performance, clean systems, and modern user experience."
+      />
 
-        <h2 className="brand text-3xl sm:text-4xl md:text-5xl font-black tracking-[0.14em] text-white">
-          FEATURED PROJECTS
-        </h2>
-
-        <p className="mt-4 max-w-2xl text-sm sm:text-base text-white/60">
-          Selected builds focused on performance, clean systems, and modern user
-          experience.
-        </p>
-      </motion.div>
+      {/* Category filter (Tabs) */}
+      {categories.length > 2 && (
+        <div
+          role="tablist"
+          aria-label="Filter projects by category"
+          className="mt-8 flex flex-wrap gap-2"
+        >
+          {categories.map((cat) => {
+            const isActive = filter === cat;
+            return (
+              <button
+                key={cat}
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => setFilter(cat)}
+                className={cn(
+                  "relative rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                  isActive
+                    ? "text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="project-filter"
+                    className="absolute inset-0 -z-10 rounded-full bg-primary"
+                    transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                  />
+                )}
+                {cat}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Grid */}
-      <div className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        {siteConfig.projects.map((project, idx) => (
-          <motion.article
-            key={project.title}
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.08 }}
-            whileHover={{ y: -8 }}
-            className="group overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl transition duration-300 hover:border-white/20 hover:shadow-[0_20px_50px_rgba(255,255,255,0.05)]"
-          >
-            {/* Image */}
-            <div className="relative h-56 overflow-hidden">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0"
-                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-              />
+      <motion.div layout className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <AnimatePresence mode="popLayout">
+          {visible.map((project) => (
+            <motion.article
+              key={project.title}
+              layout
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Card interactive className="group h-full overflow-hidden">
+                <ProjectImage src={project.image} alt={project.title} />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                <div className="p-6">
+                  <div className="flex items-center justify-between gap-2">
+                    {project.category && (
+                      <Badge variant="primary">{project.category}</Badge>
+                    )}
+                    {project.featured && (
+                      <Badge variant="outline">Featured</Badge>
+                    )}
+                  </div>
 
-              {/* Shine effect */}
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition duration-1000 group-hover:translate-x-full" />
-            </div>
+                  <h3 className="mt-4 font-display text-h3 font-semibold text-foreground">
+                    {project.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {project.description}
+                  </p>
 
-            {/* Content */}
-            <div className="p-6">
-              <h3 className="text-xl font-semibold tracking-[0.06em] text-white">
-                {project.title}
-              </h3>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {project.tech.map((tech) => (
+                      <span
+                        key={tech}
+                        className="rounded-md border border-border px-2.5 py-1 text-xs text-muted-foreground"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
 
-              <p className="mt-3 text-sm leading-6 text-white/65">
-                {project.description}
-              </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <Button
+                      href={project.liveUrl}
+                      external
+                      size="sm"
+                    >
+                      Visit site
+                      <ArrowUpRight size={15} />
+                    </Button>
+                    {project.githubUrl && (
+                      <Button
+                        href={project.githubUrl}
+                        external
+                        size="sm"
+                        variant="outline"
+                      >
+                        Code
+                        <Github size={15} />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </Card>
+            </motion.article>
+          ))}
+        </AnimatePresence>
+      </motion.div>
 
-              {/* Tech stack */}
-              <div className="mt-5 flex flex-wrap gap-2">
-                {project.tech.map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-full border border-white/10 px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-white/70"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              {/* Actions */}
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Link
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-black transition hover:scale-105"
-                >
-                  Link <ArrowUpRight size={15} />
-                </Link>
-
-                {project.githubUrl && (
-                  <Link
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-4 py-2 text-xs uppercase tracking-[0.16em] text-white/80 transition hover:bg-white/5 hover:text-white"
-                  >
-                    GitHub <Github size={15} />
-                  </Link>
-                )}
-              </div>
-            </div>
-          </motion.article>
-        ))}
-      </div>
-    </section>
+      {/* Empty state */}
+      {visible.length === 0 && (
+        <div className="mt-10 flex flex-col items-center justify-center rounded-xl border border-dashed border-border py-16 text-center">
+          <FolderOpen className="mb-3 text-muted-foreground" size={28} />
+          <p className="text-sm text-muted-foreground">
+            No projects in this category yet.
+          </p>
+        </div>
+      )}
+    </Section>
   );
 }

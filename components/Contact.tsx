@@ -1,70 +1,90 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { Mail, ArrowUpRight } from "lucide-react";
+import { Mail, ArrowUpRight, Copy, Check } from "lucide-react";
+import { useState } from "react";
 import { siteConfig } from "@/data/siteConfig";
+import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
 
 export default function Contact() {
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(siteConfig.about.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* clipboard unavailable — the mailto button still works */
+    }
+  };
+
   return (
-    <section
-      id="contact"
-      className="mx-auto w-full max-w-7xl px-6 py-24 md:py-32"
-    >
+    <Section id="contact" aria-label="Contact">
       <motion.div
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-8 sm:p-10 md:p-14 backdrop-blur-xl"
+        transition={{ duration: 0.5 }}
+        className="glass relative overflow-hidden rounded-2xl p-8 text-center sm:p-12 md:p-16"
       >
-        {/* Background Effects */}
-        <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:34px_34px]" />
+        <div className="absolute inset-0 -z-10 bg-grid" aria-hidden />
+        <div
+          className="absolute -top-24 left-1/2 -z-10 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/25 blur-[100px]"
+          aria-hidden
+        />
 
-        <div className="absolute -top-20 right-0 h-56 w-56 rounded-full bg-white/5 blur-3xl" />
-        <div className="absolute -bottom-16 left-0 h-56 w-56 rounded-full bg-white/5 blur-3xl" />
-
-        <div className="relative z-10 text-center">
-          <p className="text-xs uppercase tracking-[0.35em] text-white/45">
-            Contact Channel
-          </p>
-
-          <h2 className="brand mt-4 text-3xl sm:text-4xl md:text-5xl font-black tracking-[0.14em] text-white">
-            LET’S WORK TOGETHER
-          </h2>
-
-          <p className="mx-auto mt-5 max-w-2xl text-sm sm:text-base leading-7 text-white/65">
-            {siteConfig.contactHeadline}
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href={`mailto:${siteConfig.about.email}`}
-              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-white/15 bg-white px-7 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-black transition hover:scale-105"
-            >
-              <Mail size={16} />
-              Email Me
-            </Link>
-
-            {siteConfig.resumeUrl && (
-              <Link
-                href={siteConfig.resumeUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-white/15 px-7 py-3 text-sm uppercase tracking-[0.18em] text-white/80 transition hover:bg-white/5 hover:text-white"
-              >
-                Resume
-                <ArrowUpRight size={16} />
-              </Link>
-            )}
-          </div>
-
-          {/* Email Text */}
-          <p className="mt-6 text-xs sm:text-sm text-white/45 break-all">
-            {siteConfig.about.email}
-          </p>
+        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
+          Get in touch
         </div>
+
+        <h2 className="mx-auto mt-5 max-w-2xl font-display text-h1 font-semibold text-foreground">
+          Let&apos;s work together
+        </h2>
+        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+          {siteConfig.contactHeadline}
+        </p>
+
+        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <Button
+            href={`mailto:${siteConfig.about.email}`}
+            size="lg"
+            className="w-full sm:w-auto"
+          >
+            <Mail size={16} />
+            Email me
+          </Button>
+
+          {siteConfig.resumeUrl && (
+            <Button
+              href={siteConfig.resumeUrl}
+              external
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto"
+            >
+              Resume
+              <ArrowUpRight size={16} />
+            </Button>
+          )}
+        </div>
+
+        {/* Copyable email */}
+        <button
+          type="button"
+          onClick={copyEmail}
+          aria-label="Copy email address"
+          className="mx-auto mt-6 inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        >
+          {copied ? (
+            <Check size={14} className="text-success" />
+          ) : (
+            <Copy size={14} />
+          )}
+          <span className="break-all">{siteConfig.about.email}</span>
+        </button>
       </motion.div>
-    </section>
+    </Section>
   );
 }
