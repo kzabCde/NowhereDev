@@ -1,136 +1,113 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
-import { ArrowDown, ArrowUpRight, MapPin, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowDownRight, ArrowUpRight, MapPin } from "lucide-react";
 import { siteConfig } from "@/data/siteConfig";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { localize, useLanguage } from "@/components/providers/LanguageProvider";
 
 export default function Hero() {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % siteConfig.heroSubtitle.length);
-    }, 2600);
-    return () => clearInterval(timer);
-  }, []);
+  const { language } = useLanguage();
+  const featured = siteConfig.projects.filter((project) => project.featured);
 
   return (
     <section
       id="home"
-      className="relative flex min-h-[100svh] items-center overflow-hidden px-6 pt-28 pb-20"
+      className="relative min-h-[100svh] border-b border-border px-6 pb-16 pt-28 lg:px-10 lg:pb-20 lg:pt-36"
     >
-      {/* Background layers */}
-      <div className="absolute inset-0 -z-10 bg-grid" aria-hidden />
-      <motion.div
-        aria-hidden
-        className="absolute -left-24 top-24 -z-10 h-80 w-80 rounded-full bg-primary/25 blur-[120px]"
-        animate={{ y: [0, -28, 0] }}
-        transition={{ repeat: Infinity, duration: 9, ease: "easeInOut" }}
-      />
-      <motion.div
-        aria-hidden
-        className="absolute right-0 top-1/3 -z-10 h-80 w-80 rounded-full bg-secondary/20 blur-[120px]"
-        animate={{ y: [0, 26, 0] }}
-        transition={{ repeat: Infinity, duration: 11, ease: "easeInOut" }}
-      />
-
-      <div className="mx-auto w-full max-w-5xl">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Badge
-            variant="primary"
-            className="gap-1.5 px-3 py-1 text-[13px]"
+      <div className="technical-grid absolute inset-0 -z-10" aria-hidden />
+      <div className="mx-auto grid w-full max-w-7xl gap-14 lg:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.55fr)] lg:items-end">
+        <div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+            <span className="inline-flex items-center gap-2 text-primary">
+              <span className="h-2 w-2 bg-primary" aria-hidden />
+              {localize(siteConfig.hero.eyebrow, language)}
             </span>
-            Available for new projects
-          </Badge>
-        </motion.div>
+            <span className="inline-flex items-center gap-1.5">
+              <MapPin size={12} /> {siteConfig.about.location}
+            </span>
+          </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.05 }}
-          className="mt-6 font-display text-display font-bold text-foreground"
-        >
-          <span className="text-gradient">{siteConfig.heroTitle}</span>
-        </motion.h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.05 }}
+            className="mt-7 max-w-5xl font-display text-[clamp(3.3rem,8.3vw,8rem)] font-semibold leading-[0.9] tracking-[-0.055em] text-foreground"
+          >
+            {localize(siteConfig.hero.title, language)}
+          </motion.h1>
 
-        {/* Rotating role */}
-        <div className="mt-5 flex h-9 items-center text-lg sm:text-xl md:text-2xl">
-          <Sparkles
-            size={18}
-            className="mr-2 shrink-0 text-primary"
-            aria-hidden
-          />
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={siteConfig.heroSubtitle[index]}
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -18 }}
-              transition={{ duration: 0.4 }}
-              className="font-medium text-muted-foreground"
-            >
-              {siteConfig.heroSubtitle[index]}
-            </motion.span>
-          </AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.16 }}
+            className="mt-9 grid gap-7 border-t border-border pt-7 md:grid-cols-[minmax(0,1fr)_auto] md:items-end"
+          >
+            <p className="max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+              {localize(siteConfig.hero.description, language)}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="#projects"
+                className="inline-flex h-12 items-center gap-2 bg-primary px-5 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-primary-foreground transition-transform hover:-translate-y-0.5"
+              >
+                {localize(siteConfig.hero.primaryCta, language)}
+                <ArrowDownRight size={16} />
+              </Link>
+              <Link
+                href={siteConfig.socials.github}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-12 items-center gap-2 border border-border bg-background px-5 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-foreground transition-colors hover:border-primary hover:text-primary"
+              >
+                {localize(siteConfig.hero.secondaryCta, language)}
+                <ArrowUpRight size={16} />
+              </Link>
+            </div>
+          </motion.div>
         </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground"
+        <motion.aside
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="border border-border bg-background"
+          aria-label={language === "th" ? "ผลงานเด่น" : "Featured evidence"}
         >
-          {siteConfig.about.bio}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
-          className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
-        >
-          <Button href="#projects" size="lg">
-            View Projects
-            <ArrowDown size={16} />
-          </Button>
-          <Button href="#contact" size="lg" variant="outline">
-            Contact Me
-            <ArrowUpRight size={16} />
-          </Button>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-8 flex items-center gap-2 text-sm text-muted-foreground"
-        >
-          <MapPin size={15} className="text-primary" aria-hidden />
-          Based in {siteConfig.about.location}
-        </motion.div>
+          <div className="flex items-center justify-between border-b border-border px-4 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+            <span>{language === "th" ? "ระบบที่กำลังแสดง" : "Shipped systems"}</span>
+            <span className="text-primary">05 / LIVE</span>
+          </div>
+          {featured.map((project, index) => (
+            <Link
+              key={project.id}
+              href={`#${project.id}`}
+              className="group grid grid-cols-[32px_1fr_auto] items-center gap-3 border-b border-border px-4 py-4 last:border-b-0 hover:bg-muted/45"
+            >
+              <span className="font-mono text-[10px] text-muted-foreground">
+                0{index + 1}
+              </span>
+              <span>
+                <span className="block text-sm font-semibold text-foreground">
+                  {project.title}
+                </span>
+                <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                  {localize(project.category, language)}
+                </span>
+              </span>
+              <ArrowDownRight
+                size={15}
+                className="text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:text-primary"
+              />
+            </Link>
+          ))}
+        </motion.aside>
       </div>
-
-      {/* Scroll cue */}
-      <motion.a
-        href="#about"
-        aria-label="Scroll to about section"
-        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 text-muted-foreground transition-colors hover:text-foreground md:block"
-        animate={{ y: [0, 8, 0] }}
-        transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-      >
-        <ArrowDown size={20} />
-      </motion.a>
     </section>
   );
 }
