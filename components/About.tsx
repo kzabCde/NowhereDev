@@ -1,98 +1,79 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, Mail, Briefcase } from "lucide-react";
+import { ArrowUpRight, MapPin } from "lucide-react";
+import Link from "next/link";
 import { siteConfig } from "@/data/siteConfig";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { CountUp } from "@/components/ui/CountUp";
-
-const counters = [
-  { label: "Years Experience", value: siteConfig.about.yearsExperience },
-  { label: "Projects Delivered", value: siteConfig.about.projectsDelivered },
-  { label: "Happy Clients", value: siteConfig.about.happyClients },
-];
+import { localize, useLanguage } from "@/components/providers/LanguageProvider";
 
 export default function About() {
-  return (
-    <Section id="about" aria-label="About">
-      <SectionHeading
-        eyebrow="Profile"
-        title="About me"
-        description={siteConfig.about.bio}
-      />
+  const { language } = useLanguage();
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-[1.3fr_1fr]">
-        {/* Bio panel */}
+  return (
+    <Section id="about" aria-label="About" className="py-24 md:py-32">
+      <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+        <div>
+          <SectionHeading
+            eyebrow="About / 05"
+            title={language === "th" ? "ไม่ได้เริ่มจาก Template" : "A non-template path into engineering"}
+            description={
+              language === "th"
+                ? "พื้นฐานต่างสายกลายเป็นข้อได้เปรียบในการเข้าใจ workflow จริง ก่อนแปลงมันเป็นระบบซอฟต์แวร์"
+                : "A cross-disciplinary background became an advantage: understand the workflow first, then turn it into software."
+            }
+          />
+          <div className="mt-8 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+            <MapPin size={13} className="text-primary" />
+            {siteConfig.about.location}
+          </div>
+        </div>
+
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5 }}
         >
-          <Card className="h-full p-8 md:p-10">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-primary to-secondary text-lg font-bold text-primary-foreground">
-                {siteConfig.about.name.charAt(0)}
-              </span>
-              <div>
-                <p className="font-display text-h3 font-semibold text-foreground">
-                  {siteConfig.about.name}
+          <p className="max-w-4xl font-display text-[clamp(1.7rem,3.6vw,3rem)] font-medium leading-[1.12] tracking-[-0.035em] text-foreground">
+            {localize(siteConfig.about.story, language)}
+          </p>
+
+          <div className="mt-12 grid gap-px border border-border bg-border md:grid-cols-3">
+            {siteConfig.about.principles.map((principle, index) => (
+              <div key={principle.en} className="bg-background p-5 md:p-6">
+                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-primary">
+                  Principle 0{index + 1}
                 </p>
-                <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <Briefcase size={14} className="text-primary" />
-                  {siteConfig.about.role}
+                <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+                  {localize(principle, language)}
                 </p>
               </div>
-            </div>
+            ))}
+          </div>
 
-            <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-              {siteConfig.about.bio}
-            </p>
-
-            <dl className="mt-8 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:flex-wrap sm:gap-8">
-              <div className="flex items-center gap-2 text-sm">
-                <MapPin size={15} className="text-primary" aria-hidden />
-                <dt className="sr-only">Location</dt>
-                <dd className="text-foreground">{siteConfig.about.location}</dd>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Mail size={15} className="text-primary" aria-hidden />
-                <dt className="sr-only">Email</dt>
-                <dd>
-                  <a
-                    href={`mailto:${siteConfig.about.email}`}
-                    className="break-all text-foreground transition-colors hover:text-primary"
-                  >
-                    {siteConfig.about.email}
-                  </a>
-                </dd>
-              </div>
-            </dl>
-          </Card>
-        </motion.div>
-
-        {/* Stats */}
-        <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-          {counters.map((item, idx) => (
-            <motion.div
-              key={item.label}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.08, duration: 0.5 }}
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href={siteConfig.socials.github}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-11 items-center gap-2 border border-border px-4 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-foreground transition-colors hover:border-primary hover:text-primary"
             >
-              <Card interactive className="p-6">
-                <p className="font-display text-4xl font-bold text-foreground">
-                  <CountUp value={item.value} suffix="+" />
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {item.label}
-                </p>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+              GitHub profile <ArrowUpRight size={14} />
+            </Link>
+            {siteConfig.resumeUrl && (
+              <Link
+                href={siteConfig.resumeUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-11 items-center gap-2 bg-primary px-4 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-primary-foreground"
+              >
+                {language === "th" ? "ดาวน์โหลด Resume" : "Download resume"}
+                <ArrowUpRight size={14} />
+              </Link>
+            )}
+          </div>
+        </motion.div>
       </div>
     </Section>
   );

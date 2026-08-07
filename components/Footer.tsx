@@ -1,66 +1,53 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUp } from "lucide-react";
-import { motion } from "framer-motion";
-import SocialIcons from "./SocialIcons";
+import { ArrowUp, Github } from "lucide-react";
 import { siteConfig } from "@/data/siteConfig";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 export default function Footer() {
+  const { language } = useLanguage();
+
   return (
-    <footer className="border-t border-border px-6 py-14">
-      <div className="mx-auto w-full max-w-7xl">
-        <div className="grid gap-10 md:grid-cols-2 md:items-end">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <Link href="#home" className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-primary to-secondary text-sm font-bold text-primary-foreground">
-                {siteConfig.brand.charAt(0)}
-              </span>
-              <span className="font-display text-lg font-semibold tracking-tight text-foreground">
-                {siteConfig.brand.charAt(0) +
-                  siteConfig.brand.slice(1).toLowerCase()}
-              </span>
-            </Link>
-
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
-              Crafting fast, elegant, and scalable digital products with clean
-              code and premium interface design.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.08 }}
-            className="md:flex md:justify-end"
-          >
-            <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground md:text-right">
-                Connect
-              </p>
-              <SocialIcons compact />
-            </div>
-          </motion.div>
+    <footer className="border-t border-border px-6 py-10 lg:px-10">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
+        <div>
+          <Link href="#home" className="inline-flex items-center gap-3">
+            <span className="grid h-9 w-9 place-items-center border border-foreground bg-foreground font-mono text-[11px] font-bold tracking-[-0.08em] text-background">
+              N/D
+            </span>
+            <span className="font-display text-sm font-semibold tracking-[0.16em] text-foreground">
+              NOWHEREDEV
+            </span>
+          </Link>
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            {language === "th"
+              ? "Proof-first Product Engineering — แสดงความสามารถผ่านระบบที่สร้างจริง architecture และผลลัพธ์ที่ตรวจสอบได้"
+              : "Proof-first product engineering — capability shown through shipped systems, architecture and verifiable outcomes."}
+          </p>
         </div>
 
-        <div className="mt-10 flex flex-col gap-4 border-t border-border pt-6 md:flex-row md:items-center md:justify-between">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} {siteConfig.brand}. All rights
-            reserved.
-          </p>
-
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href={siteConfig.socials.github}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-10 items-center gap-2 border border-border px-3 font-mono text-[10px] uppercase tracking-[0.09em] text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+          >
+            <Github size={14} /> GitHub
+          </Link>
           <Link
             href="#home"
-            className="inline-flex w-fit items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-foreground hover:text-background"
+            className="inline-flex h-10 items-center gap-2 border border-border px-3 font-mono text-[10px] uppercase tracking-[0.09em] text-muted-foreground transition-colors hover:border-primary hover:text-primary"
           >
-            Back to top <ArrowUp size={14} />
+            {language === "th" ? "กลับด้านบน" : "Back to top"} <ArrowUp size={14} />
           </Link>
         </div>
+      </div>
+
+      <div className="mx-auto mt-8 flex w-full max-w-7xl flex-col gap-2 border-t border-border pt-5 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <span>© {new Date().getFullYear()} NOWHEREDEV</span>
+        <span>Thailand · Product / Full Stack / Data & AI</span>
       </div>
     </footer>
   );

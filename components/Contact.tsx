@@ -1,89 +1,70 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { Mail, ArrowUpRight, Copy, Check } from "lucide-react";
-import { useState } from "react";
+import { ArrowUpRight, Github, Mail } from "lucide-react";
 import { siteConfig } from "@/data/siteConfig";
 import { Section } from "@/components/ui/Section";
-import { Button } from "@/components/ui/Button";
+import { localize, useLanguage } from "@/components/providers/LanguageProvider";
 
 export default function Contact() {
-  const [copied, setCopied] = useState(false);
-
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(siteConfig.about.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      /* clipboard unavailable — the mailto button still works */
-    }
-  };
+  const { language } = useLanguage();
 
   return (
-    <Section id="contact" aria-label="Contact">
+    <Section id="contact" aria-label="Contact" className="pb-28 pt-16 md:pb-36 md:pt-20">
       <motion.div
-        initial={{ opacity: 0, y: 22 }}
+        initial={{ opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, amount: 0.25 }}
         transition={{ duration: 0.5 }}
-        className="glass relative overflow-hidden rounded-2xl p-8 text-center sm:p-12 md:p-16"
+        className="relative overflow-hidden border border-border bg-foreground p-7 text-background sm:p-10 md:p-14"
       >
-        <div className="absolute inset-0 -z-10 bg-grid" aria-hidden />
-        <div
-          className="absolute -top-24 left-1/2 -z-10 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/25 blur-[100px]"
-          aria-hidden
-        />
+        <div className="absolute inset-0 opacity-[0.08] technical-grid-light" aria-hidden />
+        <div className="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-primary">
+              Contact / 06 · {language === "th" ? "เปิดรับโอกาสที่เหมาะสม" : "Open to the right opportunities"}
+            </p>
+            <h2 className="mt-5 max-w-4xl font-display text-[clamp(2.5rem,6vw,5.8rem)] font-semibold leading-[0.95] tracking-[-0.05em]">
+              {localize(siteConfig.contact.headline, language)}
+            </h2>
+            <p className="mt-6 max-w-2xl text-sm leading-relaxed text-background/65 md:text-base">
+              {localize(siteConfig.contact.description, language)}
+            </p>
+          </div>
 
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
-          Get in touch
-        </div>
-
-        <h2 className="mx-auto mt-5 max-w-2xl font-display text-h1 font-semibold text-foreground">
-          Let&apos;s work together
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
-          {siteConfig.contactHeadline}
-        </p>
-
-        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Button
-            href={`mailto:${siteConfig.about.email}`}
-            size="lg"
-            className="w-full sm:w-auto"
-          >
-            <Mail size={16} />
-            Email me
-          </Button>
-
-          {siteConfig.resumeUrl && (
-            <Button
-              href={siteConfig.resumeUrl}
-              external
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto"
+          <div className="flex min-w-[220px] flex-col gap-2">
+            {siteConfig.about.email && (
+              <Link
+                href={`mailto:${siteConfig.about.email}`}
+                className="inline-flex min-h-12 items-center justify-between gap-4 bg-primary px-4 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-primary-foreground"
+              >
+                <span className="inline-flex items-center gap-2"><Mail size={14} /> Email</span>
+                <ArrowUpRight size={14} />
+              </Link>
+            )}
+            <Link
+              href={siteConfig.socials.github}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-12 items-center justify-between gap-4 border border-background/25 px-4 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-background transition-colors hover:border-primary hover:text-primary"
             >
-              Resume
-              <ArrowUpRight size={16} />
-            </Button>
-          )}
+              <span className="inline-flex items-center gap-2"><Github size={14} /> GitHub</span>
+              <ArrowUpRight size={14} />
+            </Link>
+            {siteConfig.resumeUrl && (
+              <Link
+                href={siteConfig.resumeUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-12 items-center justify-between gap-4 border border-background/25 px-4 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-background transition-colors hover:border-primary hover:text-primary"
+              >
+                {language === "th" ? "Resume / CV" : "Resume / CV"}
+                <ArrowUpRight size={14} />
+              </Link>
+            )}
+          </div>
         </div>
-
-        {/* Copyable email */}
-        <button
-          type="button"
-          onClick={copyEmail}
-          aria-label="Copy email address"
-          className="mx-auto mt-6 inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-        >
-          {copied ? (
-            <Check size={14} className="text-success" />
-          ) : (
-            <Copy size={14} />
-          )}
-          <span className="break-all">{siteConfig.about.email}</span>
-        </button>
       </motion.div>
     </Section>
   );
