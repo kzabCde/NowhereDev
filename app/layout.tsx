@@ -5,6 +5,7 @@ import {
   ThemeProvider,
   themeInitScript,
 } from "@/components/providers/ThemeProvider";
+import { LanguageProvider } from "@/components/providers/LanguageProvider";
 import { siteConfig } from "@/data/siteConfig";
 
 const inter = Inter({
@@ -20,32 +21,78 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
+const canonicalUrl = siteConfig.siteUrl || undefined;
+
 export const metadata: Metadata = {
   title: {
-    default: `${siteConfig.about.name} — ${siteConfig.about.role}`,
-    template: `%s — ${siteConfig.brand}`,
+    default: "NOWHEREDEV — Product Engineer · Full Stack · Data & AI",
+    template: "%s — NOWHEREDEV",
   },
-  description: siteConfig.about.bio,
+  description:
+    "Proof-first product engineering portfolio covering full-stack web systems, Android, data platforms, AI workflows and production operations.",
   keywords: [
+    "Product Engineer",
     "Full Stack Developer",
     "Next.js",
-    "React",
     "TypeScript",
-    "UI/UX",
-    siteConfig.brand,
+    "Supabase",
+    "Data Engineering",
+    "Machine Learning",
+    "Android",
+    "Thailand",
+    "NOWHEREDEV",
   ],
-  authors: [{ name: siteConfig.about.name }],
+  authors: [{ name: "NowhereDev" }],
+  creator: "NowhereDev",
+  alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
   openGraph: {
-    title: `${siteConfig.about.name} — ${siteConfig.about.role}`,
-    description: siteConfig.about.bio,
+    title: "NOWHEREDEV — Proof-first Product Engineer",
+    description:
+      "Production-minded web, Android, data and AI systems — shown through shipped products and technical evidence.",
     type: "website",
+    locale: "en_US",
+    alternateLocale: ["th_TH"],
+    url: canonicalUrl,
+    siteName: "NOWHEREDEV",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NOWHEREDEV — Proof-first Product Engineer",
+    description:
+      "Production-minded web, Android, data and AI systems — shown through shipped products and technical evidence.",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0f" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f5f0" },
+    { media: "(prefers-color-scheme: dark)", color: "#070a0a" },
+  ],
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "NowhereDev",
+  url: canonicalUrl,
+  jobTitle: "Product Engineer",
+  homeLocation: {
+    "@type": "Country",
+    name: "Thailand",
+  },
+  sameAs: [siteConfig.socials.github],
+  knowsAbout: [
+    "Product Engineering",
+    "Full Stack Development",
+    "Next.js",
+    "Android Development",
+    "Data Engineering",
+    "Machine Learning",
+    "Supabase",
   ],
 };
 
@@ -62,16 +109,22 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
         <ThemeProvider>
-          <a
-            href="#projects"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
-          >
-            Skip to content
-          </a>
-          {children}
+          <LanguageProvider>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:border focus:border-primary focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground"
+            >
+              Skip to content
+            </a>
+            {children}
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
