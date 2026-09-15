@@ -4,11 +4,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowDownRight, ArrowUpRight, MapPin } from "lucide-react";
 import { siteConfig } from "@/data/siteConfig";
+import { portfolioProjects } from "@/data/portfolioProjects";
 import { localize, useLanguage } from "@/components/providers/LanguageProvider";
 
 export default function Hero() {
   const { language } = useLanguage();
-  const featured = siteConfig.projects.filter((project) => project.featured);
+  const featured = portfolioProjects.filter((project) => project.featured);
+  const liveProjectCount = String(portfolioProjects.length).padStart(2, "0");
 
   return (
     <section
@@ -81,7 +83,7 @@ export default function Hero() {
         >
           <div className="flex items-center justify-between border-b border-border px-4 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
             <span>{language === "th" ? "ระบบที่กำลังแสดง" : "Shipped systems"}</span>
-            <span className="text-primary">05 / LIVE</span>
+            <span className="text-primary">{liveProjectCount} / LIVE</span>
           </div>
           {featured.map((project, index) => (
             <Link
@@ -90,7 +92,7 @@ export default function Hero() {
               className="group grid grid-cols-[32px_1fr_auto] items-center gap-3 border-b border-border px-4 py-4 last:border-b-0 hover:bg-muted/45"
             >
               <span className="font-mono text-[10px] text-muted-foreground">
-                0{index + 1}
+                {String(index + 1).padStart(2, "0")}
               </span>
               <span>
                 <span className="block text-sm font-semibold text-foreground">
