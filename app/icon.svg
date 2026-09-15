@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="NOWHEREDEV N/D icon">
+  <style>
+    .bg { fill: #111313; }
+    .fg { fill: #f4f5f0; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #f4f5f0; }
+      .fg { fill: #070a0a; }
+    }
+  </style>
+  <rect class="bg" width="64" height="64" />
+  <text
+    class="fg"
+    x="32"
+    y="33"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="-1.4"
+  >N/D</text>
+</svg>
