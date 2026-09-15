@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Github, Check, ExternalLink } from "lucide-react";
-import { siteConfig } from "@/data/siteConfig";
+import { portfolioProjects } from "@/data/portfolioProjects";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { localize, useLanguage } from "@/components/providers/LanguageProvider";
 
@@ -12,8 +12,10 @@ const SCREENSHOT_SERVICE =
 
 export default function Projects() {
   const { language } = useLanguage();
-  const featured = siteConfig.projects.filter((project) => project.featured);
-  const more = siteConfig.projects.filter((project) => !project.featured);
+  const featured = portfolioProjects.filter((project) => project.featured);
+  const more = portfolioProjects.filter((project) => !project.featured);
+  const featuredCount = String(featured.length).padStart(2, "0");
+  const moreCount = String(more.length).padStart(2, "0");
 
   return (
     <Section id="projects" aria-label="Selected work" className="py-24 md:py-32">
@@ -28,7 +30,7 @@ export default function Projects() {
           }
         />
         <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-          03 {language === "th" ? "Featured systems" : "Featured systems"}
+          {featuredCount} {language === "th" ? "Featured systems" : "Featured systems"}
         </div>
       </div>
 
@@ -46,11 +48,12 @@ export default function Projects() {
             <div className="grid gap-10 xl:grid-cols-[minmax(0,1.2fr)_minmax(340px,0.8fr)] xl:gap-16">
               <div>
                 <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  <span className="text-primary">0{projectIndex + 1}</span>
+                  <span className="text-primary">{String(projectIndex + 1).padStart(2, "0")}</span>
                   <span>/</span>
                   <span>{localize(project.category, language)}</span>
                   <span className="inline-flex items-center gap-1.5 border border-border px-2 py-1 text-foreground">
-                    <span className="h-1.5 w-1.5 bg-primary" /> Live product
+                    <span className="h-1.5 w-1.5 bg-primary" />
+                    {language === "th" ? "เปิดใช้งานจริง" : "Live product"}
                   </span>
                 </div>
 
@@ -99,7 +102,7 @@ export default function Projects() {
                   className="group block border border-border bg-muted/20"
                 >
                   <div className="flex items-center justify-between border-b border-border px-3 py-2 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
-                    <span>Live site preview</span>
+                    <span>{language === "th" ? "ตัวอย่างเว็บไซต์จริง" : "Live site preview"}</span>
                     <ExternalLink size={12} />
                   </div>
                   <div
@@ -131,7 +134,7 @@ export default function Projects() {
                       rel="noreferrer"
                       className="inline-flex min-h-11 items-center justify-center gap-2 bg-primary px-3 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-primary-foreground"
                     >
-                      Live demo <ArrowUpRight size={14} />
+                      {language === "th" ? "ดูระบบ" : "Live demo"} <ArrowUpRight size={14} />
                     </Link>
                     <Link
                       href={project.githubUrl}
@@ -139,7 +142,7 @@ export default function Projects() {
                       rel="noreferrer"
                       className="inline-flex min-h-11 items-center justify-center gap-2 border border-border px-3 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-foreground transition-colors hover:border-primary hover:text-primary"
                     >
-                      Source <Github size={14} />
+                      {language === "th" ? "ซอร์สโค้ด" : "Source"} <Github size={14} />
                     </Link>
                   </div>
                 </div>
@@ -156,11 +159,11 @@ export default function Projects() {
               More projects / 02
             </p>
             <h3 className="mt-3 font-display text-h2 font-semibold text-foreground">
-              {language === "th" ? "ระบบอื่นที่กำลังพัฒนา" : "More systems in the portfolio"}
+              {language === "th" ? "ระบบอื่นใน Portfolio" : "More systems in the portfolio"}
             </h3>
           </div>
           <span className="hidden font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:block">
-            02 systems
+            {moreCount} systems
           </span>
         </div>
 
@@ -170,7 +173,7 @@ export default function Projects() {
               <div className="flex items-start justify-between gap-5">
                 <div>
                   <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    0{index + 4} · {localize(project.category, language)}
+                    {String(featured.length + index + 1).padStart(2, "0")} · {localize(project.category, language)}
                   </p>
                   <h4 className="mt-3 font-display text-2xl font-semibold text-foreground">
                     {project.title}
