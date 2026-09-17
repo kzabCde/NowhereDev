@@ -38,8 +38,8 @@ export default function RecentActivityClient({
             title={language === "th" ? "สิ่งที่เพิ่งส่งมอบ และสิ่งที่กำลังขยับ" : "What shipped. What moved recently."}
             description={
               language === "th"
-                ? "Latest shipped เป็น milestone ที่ตรวจสอบได้จาก release/commit ส่วน Recent activity ดึง commit ล่าสุดจาก GitHub โดยตรงและ cache รายชั่วโมง เพื่อให้ Portfolio ไม่ค้างอยู่กับข้อมูลเก่า"
-                : "Latest shipped highlights verifiable release or commit milestones. Recent activity reads the newest commit from each project repository and refreshes through an hourly cache so the portfolio stays closer to the code."
+                ? "Latest shipped เป็น milestone ที่ตรวจสอบได้จาก release/commit ส่วน Recent activity ดึง commit ล่าสุดจาก repo ที่ GitHub API เข้าถึงได้โดยตรงและ cache รายชั่วโมง เพื่อให้ Portfolio ไม่ค้างอยู่กับข้อมูลเก่า"
+                : "Latest shipped highlights verifiable release or commit milestones. Recent activity reads the newest commit from available project repositories and refreshes through an hourly cache so the portfolio stays closer to the code."
             }
           />
           <div className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
