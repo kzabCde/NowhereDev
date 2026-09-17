@@ -1,37 +1,77 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Github, Check, ExternalLink } from "lucide-react";
-import { portfolioProjects } from "@/data/portfolioProjects";
+import { portfolioProjects, type ProjectArea } from "@/data/portfolioProjects";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { localize, useLanguage } from "@/components/providers/LanguageProvider";
 
 const SCREENSHOT_SERVICE =
   "https://image.thum.io/get/width/1600/crop/900/noanimate/";
 
+type ProjectFilter = "All" | ProjectArea;
+
+const projectFilters: ProjectFilter[] = ["All", "Web", "Mobile", "AI", "Data"];
+
 export default function Projects() {
   const { language } = useLanguage();
-  const featured = portfolioProjects.filter((project) => project.featured);
-  const more = portfolioProjects.filter((project) => !project.featured);
+  const [activeFilter, setActiveFilter] = useState<ProjectFilter>("All");
+  const filteredProjects =
+    activeFilter === "All"
+      ? portfolioProjects
+      : portfolioProjects.filter((project) => project.areas.includes(activeFilter));
+  const featured = filteredProjects.filter((project) => project.featured);
+  const more = filteredProjects.filter((project) => !project.featured);
   const featuredCount = String(featured.length).padStart(2, "0");
-  const moreCount = String(more.length).padStart(2, "0");
+  const visibleCount = String(filteredProjects.length).padStart(2, "0");
 
   return (
     <Section id="projects" aria-label="Selected work" className="py-24 md:py-32">
       <div className="flex flex-col gap-6 border-b border-border pb-10 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeading
-          eyebrow={language === "th" ? "Selected work / 01" : "Selected work / 01"}
+          eyebrow="Selected work / 01"
           title={language === "th" ? "ผลงานก่อนคำอธิบาย" : "The work comes first."}
           description={
             language === "th"
-              ? "Case Study เหล่านี้แสดงทั้งปัญหา บทบาท วิธีแก้ และหลักฐานจากระบบที่เปิดใช้งานจริง ไม่ใช้คะแนนความสามารถหรือภาพ stock มาทดแทนผลงาน"
-              : "These case studies show the problem, ownership, system approach and evidence from working products — not self-rated skill bars or stock imagery."
+              ? "Case Study เหล่านี้แสดงทั้งปัญหา บทบาท วิธีแก้ และหลักฐานจากระบบที่เปิดใช้งานจริง พร้อมกรองตามประเภทงานได้โดยไม่แยก portfolio ออกเป็นหลายหน้า"
+              : "These case studies show the problem, ownership, system response and evidence from working products, with filters that keep web, mobile, AI and data work in one portfolio surface."
           }
         />
         <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
           {featuredCount} {language === "th" ? "Featured systems" : "Featured systems"}
         </div>
+      </div>
+
+      <div className="flex flex-col gap-4 border-b border-border py-6 sm:flex-row sm:items-center sm:justify-between">
+        <div
+          className="flex flex-wrap gap-2"
+          role="group"
+          aria-label={language === "th" ? "กรองโปรเจกต์ตามประเภท" : "Filter projects by area"}
+        >
+          {projectFilters.map((filter) => {
+            const active = activeFilter === filter;
+            return (
+              <button
+                key={filter}
+                type="button"
+                onClick={() => setActiveFilter(filter)}
+                aria-pressed={active}
+                className={`min-h-9 border px-3 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] transition-colors ${
+                  active
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+                }`}
+              >
+                {filter === "All" ? (language === "th" ? "ทั้งหมด" : "All") : filter}
+              </button>
+            );
+          })}
+        </div>
+        <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+          {visibleCount} / {String(portfolioProjects.length).padStart(2, "0")} {language === "th" ? "ระบบ" : "systems"}
+        </p>
       </div>
 
       <div className="divide-y divide-border">
@@ -63,6 +103,33 @@ export default function Projects() {
                 <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground md:text-lg">
                   {localize(project.summary, language)}
                 </p>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {project.areas.map((area) => (
+                    <span
+                      key={area}
+                      className="border border-primary/40 bg-primary/5 px-2 py-1 font-mono text-[9px] font-semibold uppercase tracking-[0.1em] text-primary"
+                    >
+                      {area}
+                    </span>
+                  ))}
+                </div>
+
+                {project.latestShipped && (
+                  <Link
+                    href={project.latestShipped.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-6 flex max-w-2xl flex-col gap-1 border-l-2 border-primary pl-4 transition-colors hover:text-primary"
+                  >
+                    <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-primary">
+                      {language === "th" ? "Latest shipped" : "Latest shipped"} · {project.latestShipped.date}
+                    </span>
+                    <span className="text-sm font-medium text-foreground">
+                      {localize(project.latestShipped.label, language)}
+                    </span>
+                  </Link>
+                )}
 
                 <div className="mt-9 grid border-y border-border md:grid-cols-3 md:divide-x md:divide-border">
                   {[
@@ -152,68 +219,77 @@ export default function Projects() {
         ))}
       </div>
 
-      <div className="mt-10 border-t border-border pt-14">
-        <div className="flex items-end justify-between gap-5">
-          <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-primary">
-              More projects / 02
-            </p>
-            <h3 className="mt-3 font-display text-h2 font-semibold text-foreground">
-              {language === "th" ? "ระบบอื่นใน Portfolio" : "More systems in the portfolio"}
-            </h3>
-          </div>
-          <span className="hidden font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:block">
-            {moreCount} systems
-          </span>
-        </div>
-
-        <div className="mt-8 grid gap-px border border-border bg-border md:grid-cols-2">
-          {more.map((project, index) => (
-            <article key={project.id} className="bg-background p-6 md:p-8">
-              <div className="flex items-start justify-between gap-5">
-                <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    {String(featured.length + index + 1).padStart(2, "0")} · {localize(project.category, language)}
-                  </p>
-                  <h4 className="mt-3 font-display text-2xl font-semibold text-foreground">
-                    {project.title}
-                  </h4>
-                </div>
-                <ArrowUpRight size={18} className="shrink-0 text-primary" />
-              </div>
-              <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-                {localize(project.summary, language)}
+      {more.length > 0 && (
+        <div className="mt-10 border-t border-border pt-14">
+          <div className="flex items-end justify-between gap-5">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-primary">
+                More projects / 02
               </p>
-              <ul className="mt-6 space-y-2 border-t border-border pt-5">
-                {project.proof.map((proof) => (
-                  <li key={proof.en} className="flex gap-2 text-xs text-foreground">
-                    <span className="text-primary">+</span>
-                    {localize(proof, language)}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 flex flex-wrap gap-2">
-                <Link
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 border border-border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.08em] text-foreground hover:border-primary hover:text-primary"
-                >
-                  Live <ArrowUpRight size={13} />
-                </Link>
-                <Link
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 border border-border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.08em] text-foreground hover:border-primary hover:text-primary"
-                >
-                  Code <Github size={13} />
-                </Link>
-              </div>
-            </article>
-          ))}
+              <h3 className="mt-3 font-display text-h2 font-semibold text-foreground">
+                {language === "th" ? "ระบบอื่นใน Portfolio" : "More systems in the portfolio"}
+              </h3>
+            </div>
+            <span className="hidden font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:block">
+              {String(more.length).padStart(2, "0")} systems
+            </span>
+          </div>
+
+          <div className="mt-8 grid gap-px border border-border bg-border md:grid-cols-2">
+            {more.map((project, index) => (
+              <article key={project.id} className="bg-background p-6 md:p-8">
+                <div className="flex items-start justify-between gap-5">
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                      {String(featured.length + index + 1).padStart(2, "0")} · {localize(project.category, language)}
+                    </p>
+                    <h4 className="mt-3 font-display text-2xl font-semibold text-foreground">
+                      {project.title}
+                    </h4>
+                  </div>
+                  <ArrowUpRight size={18} className="shrink-0 text-primary" />
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {project.areas.map((area) => (
+                    <span key={area} className="font-mono text-[9px] uppercase tracking-[0.1em] text-primary">
+                      {area}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+                  {localize(project.summary, language)}
+                </p>
+                <ul className="mt-6 space-y-2 border-t border-border pt-5">
+                  {project.proof.map((proof) => (
+                    <li key={proof.en} className="flex gap-2 text-xs text-foreground">
+                      <span className="text-primary">+</span>
+                      {localize(proof, language)}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <Link
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 border border-border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.08em] text-foreground hover:border-primary hover:text-primary"
+                  >
+                    Live <ArrowUpRight size={13} />
+                  </Link>
+                  <Link
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 border border-border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.08em] text-foreground hover:border-primary hover:text-primary"
+                  >
+                    Code <Github size={13} />
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </Section>
   );
 }
