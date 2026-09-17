@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
+import RecentActivity from "@/components/RecentActivity";
 import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
 import About from "@/components/About";
@@ -14,6 +15,7 @@ export default function HomePage() {
       <main id="main-content" className="relative overflow-x-clip">
         <Hero />
         <Projects />
+        <RecentActivity />
         <Skills />
         <Experience />
         <About />
